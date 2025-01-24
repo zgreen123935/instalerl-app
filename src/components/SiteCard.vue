@@ -1,5 +1,5 @@
 <template>
-  <div class="site-card">
+  <RouterLink :to="{ name: 'site-details', params: { id: site.id }}" class="site-card">
     <h2 class="site-title">{{ site.name }}</h2>
     <div class="site-location">
       {{ site.address }}<br>
@@ -15,11 +15,12 @@
       </span>
     </div>
     <p class="site-work-order">{{ site.workOrder }}</p>
-  </div>
+  </RouterLink>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
 
 interface Site {
   id: string
@@ -54,6 +55,14 @@ const statusColor = computed(() => {
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   border: 1px solid #eee;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.site-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .site-title {
