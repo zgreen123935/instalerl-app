@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useDataStore } from './stores/data'
 import SiteCard from './components/SiteCard.vue'
 import DebugPanel from '@/components/DebugPanel.vue'
