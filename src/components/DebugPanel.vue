@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { fetchRecords } from '@/lib/api-client'
 
 const mode = import.meta.env.MODE

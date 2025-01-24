@@ -9,6 +9,7 @@
       <span 
         class="site-status" 
         :class="site.status === 'generated' ? 'status-generated' : 'status-error'"
+        :style="{ backgroundColor: statusColor }"
       >
         {{ site.status }}
       </span>
@@ -18,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 interface Site {
   id: string
   name: string
@@ -28,9 +31,20 @@ interface Site {
   workOrder: string
 }
 
-defineProps<{
+const props = defineProps<{
   site: Site
 }>()
+
+const statusColor = computed(() => {
+  switch (props.site.status.toLowerCase()) {
+    case 'generated':
+      return '#00a67e'
+    case 'error':
+      return '#ff0000'
+    default:
+      return 'gray'
+  }
+})
 </script>
 
 <style scoped>
@@ -67,15 +81,14 @@ defineProps<{
   padding: 4px 8px;
   border-radius: 4px;
   text-transform: capitalize;
+  color: white;
 }
 
 .status-generated {
-  color: #00a67e;
   background: rgba(0, 166, 126, 0.1);
 }
 
 .status-error {
-  color: #ff0000;
   background: rgba(255, 0, 0, 0.1);
 }
 
