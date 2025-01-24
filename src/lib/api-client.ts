@@ -1,17 +1,18 @@
 import type { WorkOrder } from '@/types';
+import { config } from '@/config';
 
 const API_KEY = 'patdO1RLKkgBMsvtJ.b293998bbfed44737014eb9922ce07f4aa212f22bfee73c30fe43f07e76f7f25';
 const BASE_ID = 'appEL9Y26LvV46RbB';
 const TABLE_ID = 'tblNVH7hI7Uki8YNu';
 
 export async function fetchRecords(): Promise<WorkOrder[]> {
-  const url = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_ID}`;
+  const url = `https://api.airtable.com/v0/${config.airtable.baseId}/${config.airtable.tableId}`;
   
   try {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': `Bearer ${config.airtable.apiKey}`,
         'Accept': 'application/json',
       }
     });
