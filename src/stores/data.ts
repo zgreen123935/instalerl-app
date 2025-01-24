@@ -1,37 +1,24 @@
 import { defineStore } from 'pinia';
-import { getShit } from '../lib/airtable';
+import { getShit } from '@/lib/airtable';
 
-// Add Airtable record type nuclear fix
-type AirtableRecord = {
-  id: string;
-  fields: {
-    name: string;
-    address: string;
-    city: string;
-    state: string;
-    status: string;
-    workOrder: string;
-  };
+// Define your exact Airtable field structure
+type WorkOrder = {
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  status: string;
+  workOrder: string;
 };
 
 export const useDataStore = defineStore('data', {
   state: () => ({
-    items: [] as Array<AirtableRecord['fields']>, // Force type compliance
-    loading: false,
-    error: null as string | null
+    items: [] as WorkOrder[]
   }),
   actions: {
-    async fetchSites() {
-      this.loading = true;
-      try {
-        const rawData = await getShit('Sites');
-        this.items = rawData as AirtableRecord['fields'][]; // Type assertion override
-      } catch (err) {
-        this.error = err instanceof Error ? err.message : 'Failed to fetch sites';
-        console.error('Error fetching sites:', err);
-      } finally {
-        this.loading = false;
-      }
+    async fetch() {
+      const records = await getShit<WorkOrder>('MainTable');
+      this.items = records.map(r => r.fields); // Extract fields from records
     }
   }
 });

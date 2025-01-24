@@ -1,11 +1,16 @@
 import Airtable from 'airtable';
 
-export const getShit = async (table: string): Promise<any[]> => {
-  const base = new Airtable({apiKey: import.meta.env.VITE_AIRTABLE_KEY})
+// Define proper Airtable response types
+type AirtableRecord<T> = {
+  id: string;
+  createdTime: string;
+  fields: T;
+};
+
+export const getShit = async <T>(table: string): Promise<AirtableRecord<T>[]> => {
+  const base = new Airtable({ apiKey: import.meta.env.VITE_AIRTABLE_KEY })
     .base(import.meta.env.VITE_AIRTABLE_BASE_ID);
-  
-  return base(table)
-    .select()
-    .all()
-    .then(records => records.map(r => r.fields as any));
+
+  const records = await base(table).select().all();
+  return records.map(r => r as AirtableRecord<T>); // Proper type assertion
 };
