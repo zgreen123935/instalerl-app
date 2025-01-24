@@ -9,21 +9,21 @@
       </div>
       <div class="detail-row">
         <span class="label">Name:</span>
-        <span class="value">{{ site.name }}</span>
+        <span class="value">{{ site.fields.name }}</span>
       </div>
       <div class="detail-row">
         <span class="label">Address:</span>
-        <span class="value">{{ site.address }}</span>
+        <span class="value">{{ site.fields.address }}</span>
       </div>
       <div class="detail-row">
         <span class="label">Status:</span>
-        <span class="value status" :class="'status-' + site.status.toLowerCase()">
-          {{ site.status }}
+        <span class="value status" :class="'status-' + site.fields.status.toLowerCase()">
+          {{ site.fields.status }}
         </span>
       </div>
-      <div class="detail-row" v-if="site.workOrder">
+      <div class="detail-row" v-if="site.fields.workOrder">
         <span class="label">Work Order:</span>
-        <span class="value">{{ site.workOrder }}</span>
+        <span class="value">{{ site.fields.workOrder }}</span>
       </div>
     </div>
 
@@ -42,7 +42,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { Site } from '@/types'
+
+interface SiteFields {
+  name: string
+  address: string
+  status: string
+  workOrder?: string
+}
+
+interface Site {
+  id: string
+  fields: SiteFields
+  createdTime: string
+}
 
 const route = useRoute()
 const router = useRouter()
@@ -62,10 +74,7 @@ async function fetchSiteDetails() {
       throw new Error(`Failed to fetch site details: ${response.statusText}`)
     }
     const data = await response.json()
-    site.value = {
-      id: data.id,
-      ...data.fields
-    }
+    site.value = data
   } catch (err) {
     error.value = err.message
     console.error('Error fetching site details:', err)

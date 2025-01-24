@@ -51,7 +51,10 @@ app.get('/api/records', async (req, res) => {
 // Proxy Airtable requests for single record
 app.get('/api/records/:id', async (req, res) => {
   try {
-    const response = await fetch(`https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_ID}/${req.params.id}`, {
+    // Use filterByFormula to find the record by ID
+    const formula = encodeURIComponent(`RECORD_ID()='${req.params.id}'`);
+    const response = await fetch(
+      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_ID}?filterByFormula=${formula}`, {
       headers: {
         'Authorization': `Bearer ${process.env.AIRTABLE_KEY}`,
         'Accept': 'application/json'
@@ -59,14 +62,17 @@ app.get('/api/records/:id', async (req, res) => {
     });
 
     if (!response.ok) {
-      if (response.status === 404) {
-        return res.status(404).json({ error: 'Site not found' });
-      }
       throw new Error(`Airtable request failed: ${response.statusText}`);
     }
 
     const data = await response.json();
-    res.json(data);
+    
+    if (!data.records || data.records.length === 0) {
+      return res.status(404).json({ error: 'Site not found' });
+    }
+
+    // Return just the first (and should be only) record
+    res.json(data.records[0]);
   } catch (err) {
     console.error('Proxy Error:', err);
     res.status(500).json({ 
