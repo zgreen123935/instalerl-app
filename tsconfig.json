@@ -3,13 +3,16 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
+    "noEmit": true,
     "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
     "skipLibCheck": true,
-    "strict": false
+    "strict": false,
+    "declaration": false,
+    "declarationMap": false
   },
   "files": [],
   "references": [
