@@ -16,22 +16,6 @@
     </div>
 
     <div class="debug-section">
-      <h4>Airtable Config</h4>
-      <div class="debug-item">
-        <span>Base ID:</span>
-        <span>{{ maskString(airtableConfig.baseId) }}</span>
-      </div>
-      <div class="debug-item">
-        <span>Table ID:</span>
-        <span>{{ airtableConfig.tableId }}</span>
-      </div>
-      <div class="debug-item">
-        <span>API Key:</span>
-        <span>{{ maskString(airtableConfig.apiKey) }}</span>
-      </div>
-    </div>
-
-    <div class="debug-section">
       <h4>API Status</h4>
       <div class="debug-item">
         <span>Last Fetch:</span>
@@ -60,26 +44,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { config } from '@/config'
+import { ref } from 'vue'
 import { fetchRecords } from '@/lib/api-client'
 
 const mode = import.meta.env.MODE
 const baseUrl = import.meta.env.BASE_URL
-const airtableConfig = config.airtable
 const isLoading = ref(false)
 const error = ref('')
 const lastFetchTime = ref<string | null>(null)
 const recordCount = ref<number>(0)
 const apiStatus = ref('Unknown')
 
-// Mask sensitive data
-function maskString(str: string): string {
-  if (!str) return ''
-  return str.slice(0, 4) + '...' + str.slice(-4)
-}
-
-// Test the Airtable connection
+// Test the API connection
 async function testConnection() {
   isLoading.value = true
   error.value = ''
