@@ -1,39 +1,31 @@
-# mobile-app
+# Installer App
 
-This template should help get you started developing with Vue 3 in Vite.
+A Vue.js application for managing installation sites and work orders.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Airtable integration for site data
+- Clean, responsive UI for viewing sites
+- Status indicators for work orders
+- Detailed site information display
 
-## Type Support for `.vue` Imports in TS
+## Setup
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+1. Clone the repository
+2. Copy `.env.example` to `.env` and fill in your Airtable credentials:
+   ```
+   VITE_AIRTABLE_KEY=your_airtable_key_here
+   VITE_AIRTABLE_BASE_ID=your_base_id_here
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Customize configuration
+## Deployment
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+The application is configured for automatic deployment on DigitalOcean's App Platform.
