@@ -1,0 +1,27 @@
+:root {
+  /* Colors */
+  --figma-primary-color: #FF0000;
+  --figma-background: #FFFFFF;
+  --figma-text: #1A1A1A;
+  --figma-secondary: #666666;
+  
+  /* Typography */
+  --figma-font: 'Roboto', system-ui, -apple-system, sans-serif;
+  --figma-font-size-sm: 14px;
+  --figma-font-size-md: 16px;
+  --figma-font-size-lg: 20px;
+  
+  /* Spacing */
+  --figma-spacing-xs: 4px;
+  --figma-spacing-sm: 8px;
+  --figma-spacing-md: 16px;
+  --figma-spacing-lg: 24px;
+  
+  /* Borders */
+  --figma-border-radius: 8px;
+  --figma-border-color: #E5E5E5;
+  
+  /* Shadows */
+  --figma-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --figma-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

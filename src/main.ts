@@ -1,4 +1,5 @@
 import './assets/main.css'
+import './assets/figma.css'  // Add Figma styles
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
