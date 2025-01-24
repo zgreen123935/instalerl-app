@@ -11,6 +11,21 @@ interface Site {
   workOrder: string
 }
 
+interface AirtableRecord {
+  id: string
+  fields: {
+    'Client Site Name'?: string
+    'Address'?: string
+    'City'?: string
+    'State/Province'?: string
+    'Work Order Details'?: {
+      state?: string
+      value?: string
+    }
+    [key: string]: any
+  }
+}
+
 export const useDataStore = defineStore('data', {
   state: () => ({
     items: [] as Site[],
@@ -41,7 +56,9 @@ export const useDataStore = defineStore('data', {
         console.log('Records received:', records.length)
         
         this.items = records
-          .filter(record => record.fields['Client Site Name']) // Filter out empty records
+          .filter((record): record is AirtableRecord => {
+            return record.fields['Client Site Name'] != null
+          })
           .map(record => ({
             id: record.id,
             name: record.fields['Client Site Name'] || 'Untitled',
