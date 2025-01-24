@@ -1,24 +1,33 @@
 import { defineStore } from 'pinia';
 import { getShit } from '@/lib/airtable';
+import type { WorkOrder } from '@/types';
 
-// Define your exact Airtable field structure
-type WorkOrder = {
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  status: string;
-  workOrder: string;
-};
+interface DataState {
+  items: WorkOrder[];
+  loading: boolean;
+  error: string | null;
+}
 
 export const useDataStore = defineStore('data', {
-  state: () => ({
-    items: [] as WorkOrder[]
+  state: (): DataState => ({
+    items: [],
+    loading: false,
+    error: null
   }),
+  
   actions: {
     async fetch() {
-      const records = await getShit<WorkOrder>('MainTable');
-      this.items = records.map(r => r.fields); // Extract fields from records
+      this.loading = true;
+      this.error = null;
+      
+      try {
+        this.items = await getShit('MainTable');
+      } catch (err) {
+        this.error = err instanceof Error ? err.message : 'Unknown error occurred';
+        console.error('Failed to fetch data:', err);
+      } finally {
+        this.loading = false;
+      }
     }
   }
 });
