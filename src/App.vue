@@ -3,9 +3,16 @@ import { RouterLink, RouterView } from 'vue-router'
 import { onMounted } from 'vue'
 import { useDataStore } from './stores/data'
 import SiteCard from './components/SiteCard.vue'
+import DebugPanel from '@/components/DebugPanel.vue'
 
 const store = useDataStore()
 onMounted(() => store.fetch())
+
+// Show debug panel in development or if debug query param is present
+const showDebug = computed(() => 
+  import.meta.env.DEV || 
+  new URLSearchParams(window.location.search).has('debug')
+)
 </script>
 
 <template>
@@ -34,6 +41,7 @@ onMounted(() => store.fetch())
         </details>
       </div>
     </main>
+    <DebugPanel v-if="showDebug" class="debug-panel" />
   </div>
 </template>
 
@@ -87,5 +95,12 @@ onMounted(() => store.fetch())
 
 h1 {
   margin-bottom: 20px;
+}
+
+.debug-panel {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
 }
 </style>
