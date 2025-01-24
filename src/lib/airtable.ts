@@ -1,5 +1,6 @@
 import Airtable from 'airtable';
 import type { WorkOrder } from '@/types';
+import { config } from '@/config';
 
 // Define proper Airtable response types
 type AirtableRecord<T> = {
@@ -24,15 +25,24 @@ function isWorkOrder(fields: unknown): fields is WorkOrder {
 }
 
 export const getShit = async (table: string): Promise<WorkOrder[]> => {
-  const base = new Airtable({ apiKey: import.meta.env.VITE_AIRTABLE_KEY })
-    .base(import.meta.env.VITE_AIRTABLE_BASE_ID);
+  try {
+    const base = new Airtable({ apiKey: config.airtable.apiKey })
+      .base(config.airtable.baseId);
 
-  const records = await base(table).select().all();
-  
-  return records.map(record => {
-    if (!isWorkOrder(record.fields)) {
-      throw new Error(`Invalid record schema for ID: ${record.id}`);
+    const records = await base(table).select().all();
+    
+    return records.map(record => {
+      if (!isWorkOrder(record.fields)) {
+        throw new Error(`Invalid record schema for ID: ${record.id}`);
+      }
+      return record.fields;
+    });
+  } catch (err: any) {
+    if (err?.statusCode === 403) {
+      console.error('Airtable authentication failed. Please check your API key and permissions.');
+      console.error('Current API Key:', config.airtable.apiKey);
+      console.error('Current Base ID:', config.airtable.baseId);
     }
-    return record.fields;
-  });
+    throw err;
+  }
 };

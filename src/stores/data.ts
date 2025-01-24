@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { getShit } from '@/lib/airtable';
 import type { WorkOrder } from '@/types';
+import { fetchRecords } from '@/lib/api-client';
 
 interface DataState {
   items: WorkOrder[];
@@ -21,7 +21,7 @@ export const useDataStore = defineStore('data', {
       this.error = null;
       
       try {
-        this.items = await getShit('MainTable');
+        this.items = await fetchRecords();
       } catch (err) {
         this.error = err instanceof Error ? err.message : 'Unknown error occurred';
         console.error('Failed to fetch data:', err);
